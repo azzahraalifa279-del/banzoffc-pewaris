@@ -407,34 +407,6 @@
         <div style="height: 100px;"></div>
     </div>
 
-    <div id="download-page" class="page">
-        <h2 class="video-title">BANZ DOWNLOADER</h2>
-        
-         <div class="glass-card">
-        <div class="status-bar"><div class="dot"></div><span>SECURE CLOUD: CONNECTED</span></div>
-        
-        <div class="glass-card" style="border: 1px solid var(--neon);">
-    <h3 style="font-family: 'Orbitron'; font-size: 12px; color: var(--neon); margin-bottom: 15px; text-align: center;">
-        TIKTOK VIDEO DOWNLOADER
-    </h3>
-    <div style="position: relative;">
-        <input type="text" id="tt-url" placeholder="Paste TikTok URL here..." style="margin-bottom: 15px;">
-    </div>
-    <button class="btn-main" onclick="downloadTikTok()">FETCH VIDEO</button>
-    
-    <div id="tt-result" style="display: none; margin-top: 20px; text-align: center; border-top: 1px dashed var(--neon); padding-top: 15px;">
-        <p id="tt-title" style="font-size: 11px; margin-bottom: 10px;"></p>
-        <button class="btn-main" id="tt-dl-link" style="background: var(--green); color: #000;">DOWNLOAD MP4</button>
-    </div>
-</div>
-
-    <div id="nav" class="nav-bar">
-        <div class="nav-btn active-nav" id="n-home" onclick="navTo('home-page')">CORE</div>
-        <div class="nav-btn" id="n-project" onclick="navTo('project-page')">PROJECTS</div>
-        <div class="nav-btn" id="n-shop" onclick="navTo('shop-page')">STORE</div>
-    </div>
-         <div class="nav-btn" id="n-download" onclick="navTo('download-page')">DOWNLOADER</div>
-
     <audio id="main-audio" loop></audio>
 
     <script>
@@ -502,7 +474,6 @@
                     document.getElementById('skill2').style.width = '90%';
                 }, 300);
             }
-            if(id === 'download-page') document.getElementById('n-download').classList.add('active-nav');
             if(id === 'project-page') document.getElementById('n-project').classList.add('active-nav');
             if(id === 'shop-page') document.getElementById('n-shop').classList.add('active-nav');
             document.getElementById('nav').style.display = 'flex';
