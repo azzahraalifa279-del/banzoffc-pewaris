@@ -412,6 +412,7 @@
         <div class="nav-btn" id="n-project" onclick="navTo('project-page')">PROJECTS</div>
         <div class="nav-btn" id="n-shop" onclick="navTo('shop-page')">STORE</div>
     </div>
+         <div class="nav-btn" id="n-download" onclick="navTo('download-page')">DOWNLOADER</div>
 
     <audio id="main-audio" loop></audio>
 
@@ -480,6 +481,7 @@
                     document.getElementById('skill2').style.width = '90%';
                 }, 300);
             }
+            if(id === 'download-page') document.getElementById('n-download').classList.add('active-nav');
             if(id === 'project-page') document.getElementById('n-project').classList.add('active-nav');
             if(id === 'shop-page') document.getElementById('n-shop').classList.add('active-nav');
             document.getElementById('nav').style.display = 'flex';
