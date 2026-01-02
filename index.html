@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BanzOffc | Cyber Identity Ultra Speed</title>
+    
+    <link rel="preload" href="https://files.catbox.moe/2y0dnq.mp4" as="video" type="video/mp4">
+    <link rel="preload" href="https://files.catbox.moe/dbnik5.jpg" as="image">
+    <link rel="preload" href="https://files.catbox.moe/14rinx.jpg" as="image">
+    <link rel="preload" href="https://files.catbox.moe/r3w0sj.jpg" as="image">
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --neon: #bc13fe;
+            --neon-glow: rgba(188, 19, 254, 0.6);
+            --bg: #05010a;
+            --card: rgba(20, 5, 35, 0.85);
+            --green: #00ffa3;
+            --text: #e0e0e0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a052e 0%, #05010a 100%);
+        }
+
+        .page { 
+            display: none; width: 100%; max-width: 480px; 
+            padding: 25px; animation: portalIn 0.5s ease-out; 
+            position: relative; z-index: 1; 
+        }
+        .active { display: block; }
+
+        @keyframes portalIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-card {
+            background: var(--card);
+            border: 1px solid rgba(188, 19, 254, 0.25);
+            border-radius: 24px;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            margin-bottom: 25px;
+        }
+
+        .video-title { 
+            font-family: 'Orbitron'; font-size: 14px; color: var(--neon); text-align: center; 
+            letter-spacing: 5px; margin-bottom: 20px; text-transform: uppercase;
+        }
+        
+        .video-panel { 
+            width: 100%; height: 210px; border-radius: 20px; overflow: hidden; 
+            border: 2px solid var(--neon); background: #000;
+            position: relative; margin-bottom: 20px;
+        }
+        .video-panel video { 
+            width: 100%; height: 100%; object-fit: cover; 
+            background: transparent;
+        }
+
+        .skill-container { margin-top: 15px; }
+        .skill-label { font-size: 11px; font-family: 'Orbitron'; margin-bottom: 5px; display: flex; justify-content: space-between; }
+        .skill-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+        .skill-progress { height: 100%; background: var(--neon); box-shadow: 0 0 10px var(--neon); width: 0%; transition: 1s ease; }
+
+        #notification {
+            position: fixed; top: 20px; right: -300px; width: 250px;
+            background: var(--card); border-left: 4px solid var(--neon);
+            padding: 15px; border-radius: 8px; transition: 0.5s; z-index: 9999;
+        }
+
+        #custom-menu {
+            position: fixed; width: 160px; background: var(--card); border: 1px solid var(--neon);
+            border-radius: 10px; display: none; z-index: 10000; overflow: hidden; backdrop-filter: blur(10px);
+        }
+        .menu-item { padding: 12px; font-size: 12px; cursor: pointer; transition: 0.2s; font-family: 'Orbitron'; }
+        .menu-item:hover { background: var(--neon); color: white; }
+
+        .nav-bar { 
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); 
+            background: rgba(15, 5, 25, 0.95); border: 1px solid var(--neon); 
+            padding: 12px 20px; border-radius: 50px; display: none; gap: 25px; 
+            backdrop-filter: blur(15px); z-index: 1000;
+        }
+        .nav-btn { font-family: 'Orbitron'; font-size: 10px; color: #fff; opacity: 0.4; cursor: pointer; }
+        .nav-btn.active-nav { opacity: 1; color: var(--neon); }
+
+        .btn-main { width: 100%; padding: 15px; border-radius: 14px; border: none; background: linear-gradient(45deg, var(--neon), #8a2be2); color: #fff; font-family: 'Orbitron'; cursor: pointer; text-decoration: none; display: inline-block; text-align: center; }
+        
+        .product-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: rgba(255, 255, 255, 0.03); border-radius: 18px; margin-bottom: 12px; }
+        .product-img { 
+            width: 60px; height: 60px; border-radius: 12px; object-fit: cover; 
+            border: 1px solid var(--neon); background: #111; 
+        }
+
+        input { width: 100%; padding: 16px; margin: 10px 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(188,19,254,0.3); border-radius: 14px; color: #fff; outline: none; }
+        .status-bar { display: flex; align-items: center; gap: 8px; font-size: 10px; font-family: 'Orbitron'; color: var(--green); margin-bottom: 15px; }
+        .dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; } }
+        .typing-cursor::after { content: "|"; animation: blink 0.7s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        .rose-effect { position: absolute; font-size: 20px; pointer-events: none; animation: fadeOut 0.8s forwards; z-index: 9999; }
+        @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-30px); } }
+        
+        .profile-photo { width:120px; height:120px; border-radius:50%; overflow:hidden; margin:14px auto 18px; border:2px solid var(--neon); box-shadow:0 0 25px rgba(188,19,254,.45); }
+        .profile-photo img { width:100%; height:100%; object-fit:cover; }
+
+        /* ANIMASI CAHAYA BERJALAN */
+        .video-title, .btn-main, .nav-btn, .product-item, .glass-card, .menu-item, #track-name, .skill-label, .status-bar, input { position: relative; overflow: hidden; }
+        .video-title::before, .btn-main::before, .nav-btn::before, .product-item::before, .glass-card::before, .menu-item::before, #track-name::before, .skill-label::before, .status-bar::before, input::before {
+            content: ""; position: absolute; top: -60%; left: -130%; width: 65%; height: 220%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), rgba(0,255,255,0.35), rgba(188,19,254,0.30), transparent);
+            transform: rotate(25deg); animation: globalSweep 3.8s linear infinite; pointer-events: none; z-index: 2;
+        }
+        @keyframes globalSweep { from { left: -130%; } to { left: 160%; } }
+
+        /* CITY BACKGROUND EFFECT */
+        #city-bg { position: fixed; inset: 0; z-index: -2; background-color: #05010a; overflow: hidden; }
+        .city-block { position: absolute; width: 40px; height: 40px; background: rgba(255, 0, 0, 0.15); border: 1px solid rgba(255, 60, 60, 0.6); box-shadow: 0 0 12px rgba(255, 0, 0, 0.6), inset 0 0 10px rgba(255, 80, 80, 0.4); animation: cityMove linear infinite; }
+        @keyframes cityMove { from { transform: translateY(110vh); } to { transform: translateY(-120vh); } }
+
+        /* FORCE COLORS */
+        :root { --neon: #ff1a1a !important; --neon-glow: rgba(255, 26, 26, 0.6) !important; --card: rgba(35, 5, 5, 0.85) !important; --green: #ffffff !important; }
+        .status-bar, .status-bar span, .dot { color:#ffffff !important; background:#ffffff !important; box-shadow: 0 0 10px rgba(255,255,255,0.6), 0 0 20px rgba(255,255,255,0.35); }
+        .rabbit-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Tetap bisa klik tombol */
+    z-index: 9998;
+    overflow: hidden;
+}
+
+.rabbit-head {
+    position: absolute;
+    font-size: 45px;
+    filter: drop-shadow(0 0 15px var(--neon));
+    user-select: none;
+    /* Animasi lari melintas dan lompat naik turun */
+    animation: 
+        rabbitX 12s linear infinite, 
+        rabbitY 1.5s ease-in-out infinite alternate;
+}
+
+/* Gerakan Horizontal (Kiri ke Kanan) */
+@keyframes rabbitX {
+    0% { left: -100px; transform: scaleX(1); }
+    50% { left: 100vw; transform: scaleX(1); }
+    51% { transform: scaleX(-1); } /* Balik arah */
+    100% { left: -100px; transform: scaleX(-1); }
+}
+
+/* Gerakan Vertikal (Naik Turun / Melompat) */
+@keyframes rabbitY {
+    0% { top: 20%; }   /* Posisi paling atas */
+    100% { top: 70%; } /* Posisi paling bawah */
+}
+/* --- LOADING INTERFACE --- */
+#loading-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg);
+    display: none; /* Sembunyi secara default */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+
+.loader-box {
+    width: 200px;
+    text-align: center;
+    font-family: 'Orbitron';
+}
+
+.loader-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 26, 26, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 15px;
+    border: 1px solid rgba(255, 26, 26, 0.3);
+}
+
+.loader-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--neon);
+    box-shadow: 0 0 15px var(--neon);
+    animation: loadProgress 2.5s ease-in-out forwards;
+}
+
+@keyframes loadProgress {
+    0% { width: 0%; }
+    50% { width: 70%; }
+    100% { width: 100%; }
+}
+
+.loading-text {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--neon);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+    </style>
+</head>
+<body oncontextmenu="return showMenu(event)">
+
+<div id="city-bg"></div>    
+
+<div id="loading-screen">
+    <div class="loader-box">
+        <div class="loading-text">Loading System...</div>
+        <div id="loading-status" style="font-size: 8px; color: #fff; margin-bottom: 5px; opacity: 0.6;">Loading Modules...</div>
+        <div class="loader-bar">
+            <div class="loader-fill"></div>
+        </div>
+    </div>
+</div>
+
+<div class="rabbit-overlay">
+    <div class="rabbit-head" style="animation-duration: 10s, 1.2s;">☠️</div>
+    <div class="rabbit-head" style="animation-duration: 15s, 2s; animation-delay: -5s; opacity: 0.7; font-size: 30px;">☠️</div>
+</div>
+
+    <div id="notification">
+        <strong style="color:var(--neon)">SYSTEM:</strong> Welcome To My Website 
+    </div>
+
+    <div id="custom-menu">
+        <div class="menu-item" onclick="location.reload()">Reload</div>
+        <div class="menu-item" onclick="window.open('https://wa.me/6283169447768')">Contact</div>
+    </div>
+
+    <div id="login-page" class="page active">
+        <div class="glass-card" style="margin-top: 15vh; text-align: center;">
+            <div style="font-family: 'Orbitron'; font-size: 40px; color: var(--neon);">Ω</div>
+            <h1 style="font-family: 'Orbitron'; font-size: 14px; letter-spacing: 5px; margin: 20px 0;">BANZOFFC WEBSITE</h1>
+            <input type="text" id="user" placeholder="USERNAME" autofocus>
+            <input type="password" id="pass" placeholder="PASSWORD">
+            <button class="btn-main" onclick="doLogin()">Log In</button>
+        </div>
+    </div>
+
+    <div id="home-page" class="page">
+        <h2 class="video-title">Welcome To My World</h2>
+        <div class="video-panel">
+            <video autoplay muted loop playsinline preload="auto">
+                <source src="https://files.catbox.moe/2y0dnq.mp4" type="video/mp4">
+            </video>
+        </div>
+        
+        <h2 class="video-title">Banz Offc?</h2>
+        <div class="profile-photo">
+            <img src="https://files.catbox.moe/989rd8.jpg" alt="BanzOffc Profile">
+        </div>
+
+        <div class="glass-card">
+            <div class="status-bar"><div class="dot"></div><span>SERVER: ONLINE</span></div>
+            <h3 style="font-family: 'Orbitron'; font-size: 11px; color: var(--neon); margin-bottom:10px;">> <span id="type-target" class="typing-cursor"></span></h3>
+            <p style="font-size: 14px; opacity: 0.8; line-height: 1.6; text-align: justify; margin-bottom: 15px;">
+                Seorang bocah SMP yang ingin menjadi developer alhamdulilah saya sudah mengerti bahasa pemrograman dasar.
+            </p>
+            
+            <div class="skill-container">
+                <div class="skill-label"><span>NODE.JS</span><span>20%</span></div>
+                <div class="skill-bar"><div id="skill1" class="skill-progress"></div></div>
+                <div class="skill-label"><span>HTML/CSS</span><span>14%</span></div>
+                <div class="skill-bar"><div id="skill2" class="skill-progress"></div></div>
+            </div>
+        </div>
+
+        <div class="glass-card" style="padding: 15px;">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <a href="https://wa.me/6283169447768" class="btn-main" style="font-size:9px; padding:10px;">WHATSAPP</a>
+                <a href="https://t.me/banzoffc" class="btn-main" style="font-size:9px; padding:10px;">TELEGRAM</a>
+                <a href="https://github.com/azzahraalifa279-del" class="btn-main" style="font-size:9px; padding:10px;">GITHUB</a>
+            </div>
+        </div>
+
+        <div class="glass-card" style="border: 1px solid var(--neon); background: rgba(255, 26, 26, 0.05);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <div id="track-name" style="font-family:'Orbitron'; font-size:9px; color:var(--neon);">MUSIC..</div>
+        <button class="btn-main" style="width:auto; padding:5px 12px; font-size:9px;" onclick="toggleMusic()">ON/OFF</button>
+    </div>
+    <div id="playlist-container"></div>
+</div>
+            </div>
+            <div id="playlist-container"></div>
+        </div>
+        <div style="height: 100px;"></div>
+    </div>
+
+    <div id="project-page" class="page">
+        <h2 class="video-title">PROJECT ARCHIVE</h2>
+        
+        <div class="glass-card">
+            <div class="product-item">
+                <div style="flex-grow:1"><h5>BANZ-OFFC BOT</h5><p style="font-size:10px; opacity:0.6;">WhatsApp Automation Multi-Device</p></div>
+                <span style="color:var(--green); font-size:10px;">ACTIVE</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn-main" style="padding: 8px; font-size: 9px;" onclick="alert('NOT ACCESS: System Encrypted')">GET SOURCE</button>
+                <button class="btn-main" style="padding: 8px; font-size: 9px;" onclick="alert('NOT ACCESS: System Encrypted')">TUTORIAL</button>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="product-item">
+                <div style="flex-grow:1"><h5>WHATSAPP HACK</h5><p style="font-size:10px; opacity:0.6;">Project By Team Zero</p></div>
+                <span style="color:var(--green); font-size:10px;">STABLE</span>
+            </div>
+            <button class="btn-main" style="padding: 8px; font-size: 10px;" onclick="alert('NOT ACCESS: System Encrypted')">LIVE PREVIEW</button>
+        </div>
+
+        <div class="glass-card">
+            <div class="product-item">
+                <div style="flex-grow:1"><h5>DDOS WEBSITE</h5><p style="font-size:10px; opacity:0.6;">Internal Stress Testing Tools</p></div>
+                <span style="color:var(--neon); font-size:10px;">PROTECTED</span>
+            </div>
+            <button class="btn-main" style="padding: 8px; font-size: 10px;" onclick="alert('NOT ACCESS: System Encrypted')">REQUEST ACCESS</button>
+        </div>
+
+        <div class="glass-card">
+            <div class="product-item">
+                <div style="flex-grow:1"><h5>AUTO-POST FB</h5><p style="font-size:10px; opacity:0.6;">Social Media Marketing Tool</p></div>
+                <span style="color:var(--green); font-size:10px;">UPDATING</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px;">
+                <button class="btn-main" style="padding: 5px; font-size: 8px;" onclick="alert('NOT ACCESS: System Encrypted')">LOGS</button>
+                <button class="btn-main" style="padding: 5px; font-size: 8px;" onclick="alert('NOT ACCESS: System Encrypted')">API</button>
+                <button class="btn-main" style="padding: 5px; font-size: 8px;" onclick="alert('NOT ACCESS: System Encrypted')">FIX</button>
+            </div>
+        </div>
+
+        <div style="height: 100px;"></div>
+    </div>
+
+    <div id="shop-page" class="page">
+        <h2 class="video-title">BANZ STORE</h2>
+        
+        <div class="glass-card">
+            <div class="product-item">
+                <img src="https://files.catbox.moe/dbnik5.jpg" class="product-img">
+                <div style="flex-grow:1;"><h5>PREMIUM SCRIPT BANZOFFC</h5><p style="color:var(--green); font-size:11px;">IDR 30K</p></div>
+                <a href="http://t.me/banzoffc" class="btn-main" style="width:auto; padding:8px 15px; font-size:10px;">ORDER</a>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="product-item">
+                <img src="https://files.catbox.moe/14rinx.jpg" class="product-img">
+                <div style="flex-grow:1;"><h5>BASE WHATSAPP</h5><p style="color:var(--green); font-size:11px;">IDR 50K/100k</p></div>
+                <div style="display: flex; gap: 5px;">
+                    <a href="http://t.me/banzoffc" class="btn-main" style="width:auto; padding:8px 15px; font-size:10px;">ORDER</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="product-item">
+                <img src="https://files.catbox.moe/r3w0sj.jpg" class="product-img">
+                <div style="flex-grow:1;"><h5>FUNCTION BUG</h5><p style="color:var(--green); font-size:11px;">IDR 100K</p></div>
+                <a href="http://t.me/banzoffc" class="btn-main" style="width:auto; padding:8px 15px; font-size:10px;">ORDER</a>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="product-item">
+                <div style="flex-grow:1;">
+                    <h5 style="margin-bottom:5px;">CUSTOM WEB DESIGN</h5>
+                    <p style="font-size:10px; opacity:0.6;">Portfolio, Store, or Dashboard</p>
+                    <p style="color:var(--green); font-size:11px; margin-top:5px;">START FROM 70K</p>
+                </div>
+                <a href="https://t.me/banzoffc" class="btn-main" style="width:auto; padding:10px 20px; font-size:10px;">CHAT</a>
+            </div>
+        </div>
+
+        <div class="glass-card" style="text-align:center;">
+            <p style="font-size:11px; opacity:0.5; margin-bottom:15px;">WANT TO BECOME A RESELLER?</p>
+            <a href="http://t.me/banzoffc" class="btn-main" style="font-size:10px; width:80%;">JOIN PARTNER PROGRAM</a>
+        </div>
+
+        <div style="height: 100px;"></div>
+    </div>
+
+    <div id="nav" class="nav-bar">
+        <div class="nav-btn active-nav" id="n-home" onclick="navTo('home-page')">CORE</div>
+        <div class="nav-btn" id="n-project" onclick="navTo('project-page')">PROJECTS</div>
+        <div class="nav-btn" id="n-shop" onclick="navTo('shop-page')">STORE</div>
+    </div>
+
+    <audio id="main-audio" loop></audio>
+
+    <script>
+        // BACKGROUND FAST
+        const cityBg = document.getElementById("city-bg");
+        for (let i = 0; i < 90; i++) {
+            const block = document.createElement("div");
+            block.className = "city-block";
+            const size = Math.random() * 35 + 25;
+            block.style.width = size + "px";
+            block.style.height = size + "px";
+            block.style.left = Math.random() * 100 + "vw";
+            block.style.top = Math.random() * 120 + "vh";
+            block.style.animationDuration = (Math.random() * 12 + 8) + "s";
+            block.style.animationDelay = Math.random() * 5 + "s";
+            cityBg.appendChild(block);
+        }
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playClickSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        let typed = false;
+        function typeWriter() {
+            if(typed) return;
+            const text = "WHO IS BANZ?";
+            let i = 0;
+            function typing() {
+                if (i < text.length) {
+                    document.getElementById("type-target").innerHTML += text.charAt(i);
+                    i++; setTimeout(typing, 80);
+                }
+            }
+            typing(); typed = true;
+        }
+
+        function showMenu(e) {
+            e.preventDefault();
+            const m = document.getElementById('custom-menu');
+            m.style.display = 'block'; m.style.left = e.pageX + 'px'; m.style.top = e.pageY + 'px';
+            return false;
+        }
+        document.addEventListener('click', () => {
+            document.getElementById('custom-menu').style.display = 'none';
+            playClickSound();
+        });
+
+        function navTo(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav'));
+            document.getElementById(id).classList.add('active');
+            if(id === 'home-page') {
+                document.getElementById('n-home').classList.add('active-nav');
+                typeWriter();
+                setTimeout(() => {
+                    document.getElementById('skill1').style.width = '85%';
+                    document.getElementById('skill2').style.width = '90%';
+                }, 300);
+            }
+            if(id === 'project-page') document.getElementById('n-project').classList.add('active-nav');
+            if(id === 'shop-page') document.getElementById('n-shop').classList.add('active-nav');
+            document.getElementById('nav').style.display = 'flex';
+        }
+
+        function doLogin() {
+            const u = document.getElementById('user').value.toLowerCase();
+            if(u === "admin" || u === "banz") {
+                navTo('home-page');
+                const n = document.getElementById('notification');
+                n.style.right = '20px'; setTimeout(() => n.style.right = '-300px', 3000);
+            } else { alert("WRONG USER"); }
+        }
+
+        const songs = [
+            { name: "Sedia aku sebelum hujan", url: "https://files.catbox.moe/7fevui.mp3" },
+            { name: "Kamin Speed Up", url: "https://files.catbox.moe/o135pi.mp3" },
+            { name: "Serana For Revenge", url: "https://files.catbox.moe/o135pi.mp3" },
+            { name: "Pura-pura Lupa", url: "https://files.catbox.moe/x1e4im.mp3" },
+            { name: "Jakarta Hari Ini", url: "https://files.catbox.moe/flo2u3.mp3" }
+        ];
+        const audio = document.getElementById('main-audio');
+        songs.forEach((s, i) => {
+            const d = document.createElement('div');
+            d.style = "padding:8px; font-size:11px; cursor:pointer; border-bottom:1px solid rgba(255,255,255,0.1)";
+            d.innerText = `0${i+1}. ${s.name}`;
+            d.onclick = (e) => { 
+                e.stopPropagation(); audio.src = s.url; 
+                document.getElementById('track-name').innerText = s.name.toUpperCase(); audio.play(); 
+            };
+            document.getElementById('playlist-container').appendChild(d);
+        });
+
+        function toggleMusic() {
+            if (audio.paused) { if(!audio.src) audio.src = songs[0].url; audio.play(); }
+            else audio.pause();
+        }
+        
+        function doLogin() {
+    const u = document.getElementById('user').value.toLowerCase();
+    
+    if(u === "admin" || u === "banz") {
+        // 1. Tampilkan Loading Screen
+        const loading = document.getElementById('loading-screen');
+        const statusText = document.getElementById('loading-status');
+        loading.style.display = 'flex';
+
+        // 2. Simulasi Perubahan Teks Loading (Opsional agar lebih keren)
+        setTimeout(() => { statusText.innerText = "LOADING INTERFACE..."; }, 800);
+        setTimeout(() => { statusText.innerText = "BYPASSING SECURITY..."; }, 1600);
+        setTimeout(() => { statusText.innerText = "CHECKING INTERNET..."; }, 1800);
+        setTimeout(() => { statusText.innerText = "WELCOME AGENT."; }, 2200);
+
+        // 3. Pindah ke Halaman Utama setelah loading selesai (2.5 detik)
+        setTimeout(() => {
+            loading.style.display = 'none'; // Sembunyikan loading
+            navTo('home-page'); // Pindah halaman
+            
+            // Munculkan Notifikasi
+            const n = document.getElementById('notification');
+            n.style.right = '20px'; 
+            setTimeout(() => n.style.right = '-300px', 3000);
+        }, 2500);
+
+    } else { 
+        alert("ACCESS DENIED: WRONG USER"); 
+    }
+}
+
+        document.addEventListener('click', (e) => {
+            const r = document.createElement('div');
+            r.className = 'rose-effect';
+            r.style.left = e.clientX + 'px'; r.style.top = e.clientY + 'px';
+            r.innerHTML = '✦'; document.body.appendChild(r);
+            setTimeout(() => r.remove(), 800);
+        });
+    </script>
+</body>
+</html>
